@@ -1,0 +1,60 @@
+# ACST890-
+#Q1 
+intRate <- c(0.01,0.02,0.03,0.04)
+P <- function(C,F,intRate,n){
+  Coupon <- rep(0,n)
+  for (i in 1:n) Coupon[i] <- C * exp(-intRate[i]*i)
+  c <- sum(Coupon)
+  f <- F * exp(-intRate[n]*n)
+bond <- c + f 
+return (bond)
+}
+P(6,100,intRate,4)
+#Q3(a)
+dataset <- read.csv("~/singapore.economy.csv", stringsAsFactors=FALSE)
+#Q3(b)
+dataset <- na.omit(dataset)
+#Q3(c)
+plot(y=dataset$gdp,x=dataset$time,xlab="Time",ylab="GDP(%)",main="Singapore GDP growth")
+#Q3(d)
+mean1 <- mean(dataset$gdp[dataset$period==1])
+mean1
+mean2 <- mean(dataset$gdp[dataset$period==2])
+mean2
+mean3 <- mean(dataset$gdp[dataset$period==3])
+mean3
+sd1 <- sd(dataset$gdp[dataset$period==1])
+sd1
+sd2 <- sd(dataset$gdp[dataset$period==2])
+sd2
+sd3 <- sd(dataset$gdp[dataset$period==3])
+sd3
+data <- c(mean1,mean2,mean3,sd1,sd2,sd3)
+stat.table <- matrix (data,nrow=3)
+row.names(stat.table)=c('period 1','period 2','period 3')
+colnames (stat.table)=c('mean','standard deviation')
+print(stat.table)
+#Q3(e)
+pairs(~gdp + exp + epg + hpr +gdpus + oil + crd + bci,dataset)
+#Q3(f)
+lm.fit <-lm(gdp~exp,dataset)
+summary(lm.fit)
+#Q3(g)
+mlm.fit <- lm.fit(gdp~exp+epg+hpr+oil+gdpus+crd,dataset)
+summary(mlm.fit)
+#Q3(h)
+threshold <- quantile(dataset$gdp,0.05)
+state <- rep("crisis",110)
+state[as.numeric(dataset$gdp) > as.numeric(threshold)]="normal"
+state
+dataset <- data.frame(dataset,state)
+train <- (dataset$time<2008)
+dataset.2008 <- dataset[!train,]
+dim(dataset.2008)
+state.2008 <- dataset$state[!train]
+glm.fit <- glm(state~bci,dataset,family=binomial,subset=train)
+summary(glm.fit)
+glm.probs <- predict(glm.fit,dataset.2008,type="response")
+glm.pred <- rep("crisis",dim(dataset.2008)[1])
+glm.pred[glm.probs>.5]="normal"
+table(glm.pred,state.2008)
