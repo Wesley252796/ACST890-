@@ -40,7 +40,7 @@ pairs(~gdp + exp + epg + hpr +gdpus + oil + crd + bci,dataset)
 lm.fit <-lm(gdp~exp,dataset) #fit the linear regression model 
 summary(lm.fit)
 #Q3(g)
-mlm.fit <- lm.fit(gdp~exp+epg+hpr+oil+gdpus+crd,dataset) #fit the multiple linear regression model
+mlm.fit <- lm(gdp~exp+epg+hpr+oil+gdpus+crd,dataset) #fit the multiple linear regression model
 summary(mlm.fit)
 #Q3(h)
 threshold <- quantile(dataset$gdp,0.05)
