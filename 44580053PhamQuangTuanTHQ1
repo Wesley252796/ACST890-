@@ -1,9 +1,9 @@
 # ACST890-
 #Q1 
-intRate <- c(0.01,0.02,0.03,0.04)
+intRate <- c(0.01,0.02,0.03,0.04) #input effective half-yearly interest rates
 P <- function(C,F,intRate,n){
   Coupon <- rep(0,n)
-  for (i in 1:n) Coupon[i] <- C * exp(-intRate[i]*i)
+  for (i in 1:n) Coupon[i] <- C * exp(-intRate[i]*i) #calculate coupon payments for each year
   c <- sum(Coupon)
   f <- F * exp(-intRate[n]*n)
 bond <- c + f 
@@ -17,30 +17,30 @@ dataset <- na.omit(dataset)
 #Q3(c)
 plot(y=dataset$gdp,x=dataset$time,xlab="Time",ylab="GDP(%)",main="Singapore GDP growth")
 #Q3(d)
-mean1 <- mean(dataset$gdp[dataset$period==1])
+mean1 <- mean(dataset$gdp[dataset$period==1]) #calculate mean of gdp for period 1
 mean1
-mean2 <- mean(dataset$gdp[dataset$period==2])
+mean2 <- mean(dataset$gdp[dataset$period==2]) #calculate mean of gdp for period 2
 mean2
-mean3 <- mean(dataset$gdp[dataset$period==3])
+mean3 <- mean(dataset$gdp[dataset$period==3]) #calculate mean of gdp for period 3
 mean3
-sd1 <- sd(dataset$gdp[dataset$period==1])
+sd1 <- sd(dataset$gdp[dataset$period==1]) #calculate standard deviation of gdp for period 1
 sd1
-sd2 <- sd(dataset$gdp[dataset$period==2])
+sd2 <- sd(dataset$gdp[dataset$period==2]) #calculate standard deviation of gdp for period 2
 sd2
-sd3 <- sd(dataset$gdp[dataset$period==3])
+sd3 <- sd(dataset$gdp[dataset$period==3]) #calculate standard deviation of gdp for period 3
 sd3
-data <- c(mean1,mean2,mean3,sd1,sd2,sd3)
+data <- c(mean1,mean2,mean3,sd1,sd2,sd3) #create a vector of the calculated means and standard deviations
 stat.table <- matrix (data,nrow=3)
-row.names(stat.table)=c('period 1','period 2','period 3')
-colnames (stat.table)=c('mean','standard deviation')
+row.names(stat.table)=c('period 1','period 2','period 3') #add names to the row of matrix 
+colnames (stat.table)=c('mean','standard deviation') #add names to the column of matrix
 print(stat.table)
 #Q3(e)
 pairs(~gdp + exp + epg + hpr +gdpus + oil + crd + bci,dataset)
 #Q3(f)
-lm.fit <-lm(gdp~exp,dataset)
+lm.fit <-lm(gdp~exp,dataset) #fit the linear regression model 
 summary(lm.fit)
 #Q3(g)
-mlm.fit <- lm.fit(gdp~exp+epg+hpr+oil+gdpus+crd,dataset)
+mlm.fit <- lm.fit(gdp~exp+epg+hpr+oil+gdpus+crd,dataset) #fit the multiple linear regression model
 summary(mlm.fit)
 #Q3(h)
 threshold <- quantile(dataset$gdp,0.05)
